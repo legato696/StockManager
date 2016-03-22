@@ -13,8 +13,10 @@ public interface IQueryBuilder
 {
     String GetQuery();
     void Select(String selections);
-    void From(String tableName);
+    void SetTable(String tableName);
     void Where(String where);
     void OrderBy(String orderCriteria);
-    void Join(String tableName);
+    void Join(String tableName, String on, String abreviation);
+    void Insert(String columnsAffected, String insertData);
+    void Update(String columnUpdate,String updateData);
 }
