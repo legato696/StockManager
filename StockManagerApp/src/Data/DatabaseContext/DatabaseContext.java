@@ -14,14 +14,14 @@ import java.sql.*;
  */
 public class DatabaseContext
 {
-    private ConnectionStrings _strings;
+    private final ConnectionStrings _strings;
     
     public DatabaseContext(ConnectionStrings strings)
     {
         _strings = strings;
     }
     
-    public ResultSet ExecuteInsertQuerry(String querry)
+    public ResultSet ExecuteInsertQuery(String query)
     {
         ResultSet resultSet = null;
         Connection connection = null;
@@ -32,7 +32,7 @@ public class DatabaseContext
             // Establish the connection
             connection = DriverManager.getConnection(_strings.connection);
             // Prepare statement to execute with querry
-            prepared = connection.prepareStatement(querry, Statement.RETURN_GENERATED_KEYS);
+            prepared = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             // Execute the prepared statement
             prepared.execute();
             // Retrieve the generated key from Insert

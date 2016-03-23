@@ -3,17 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Data.Models;
-
-import Data.Models.Abstract.AbsModel;
+package Data.Models.Abstract;
 
 /**
  *
  * @author Urban
  */
-public class StockItem extends AbsModel
+public abstract class AbsModel
 {
-    public int StockItemId;
-    public Product Product;
-    public StockHolder StockHolder;
 }

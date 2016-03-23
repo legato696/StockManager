@@ -5,13 +5,14 @@
  */
 package Data.Models;
 
+import Data.Models.Abstract.AbsModel;
 import Data.Models.Enums.StockHolderType;
 
 /**
  *
  * @author Urban
  */
-public class StockHolder
+public class StockHolder extends AbsModel
 {
     public int StockHolderId;
     public String Name;

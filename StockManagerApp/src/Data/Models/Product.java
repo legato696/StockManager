@@ -5,12 +5,15 @@
  */
 package Data.Models;
 
+import Data.Models.Abstract.AbsModel;
+
 /**
  *
  * @author Urban
  */
-public class Product
+public class Product extends AbsModel
 {
+    public static final String TABLE_NAME = "Products";
     public int ProductId;
     public String ProductName;
 }
