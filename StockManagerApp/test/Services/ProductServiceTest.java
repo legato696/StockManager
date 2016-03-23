@@ -52,10 +52,16 @@ public class ProductServiceTest
     public void testGetProductById()
     {
         System.out.println("GetProductById");
+        
+        // Arrange
         int productId = 0;
         ProductService instance = null;
         Product expResult = null;
+        
+        //Act
         Product result = instance.GetProductById(productId);
+        
+        //Assert
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

@@ -5,8 +5,12 @@
  */
 package Services;
 
+import Data.DatabaseContext.DatabaseContext;
+import Data.Helpers.IQueryBuilder;
 import Data.Models.StockHolder;
 import Services.Interfaces.IStockHolderService;
+import Services.Transformers.ITransformer;
+import java.sql.ResultSet;
 
 /**
  *
@@ -14,23 +18,52 @@ import Services.Interfaces.IStockHolderService;
  */
 public class StockHolderService implements IStockHolderService
 {
-
+    private final IQueryBuilder _queryBuilder;
+    private final DatabaseContext _dbContext;
+    private final ITransformer _transformer;
+    
+    
+    public StockHolderService(IQueryBuilder queryBuilder, ITransformer transformer, DatabaseContext dbContext)
+    {
+        _queryBuilder = queryBuilder;
+        _transformer = transformer;
+        _dbContext = dbContext;
+    }
+    
     @Override
     public StockHolder GetStockHolderById(int stockHolderId)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ResultSet result;
+        
+        _queryBuilder.Select("*");
+        _queryBuilder.SetTable(StockHolder.TABLE_NAME);
+        _queryBuilder.Where("StockHolderId = " + stockHolderId);
+        
+        result = _dbContext.ExecuteSelectQuery(_queryBuilder.GetQuery());
+    
+        return (StockHolder)_transformer.Transofrm(result);
     }
 
     @Override
     public StockHolder GetStockHolderByName(String stockHolderName)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ResultSet result;
+        
+        _queryBuilder.Select("*");
+        _queryBuilder.SetTable(StockHolder.TABLE_NAME);
+        _queryBuilder.Where("Name = " + stockHolderName);
+        
+        result = _dbContext.ExecuteSelectQuery(_queryBuilder.GetQuery());
+    
+        return (StockHolder)_transformer.Transofrm(result);
     }
 
     @Override
     public void CreateStockHolder(StockHolder stockHolder)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        _queryBuilder.SetTable(StockHolder.TABLE_NAME);
+        _queryBuilder.Insert("Name", stockHolder.Name);
+        _dbContext.ExecuteInsertQuery(_queryBuilder.GetQuery());
     }
 
     @Override

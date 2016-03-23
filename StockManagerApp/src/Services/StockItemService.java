@@ -5,11 +5,14 @@
  */
 package Services;
 
+import Data.DatabaseContext.DatabaseContext;
+import Data.Helpers.IQueryBuilder;
 import Data.Models.Product;
 import Data.Models.Requests.StockItemUpdateRequest;
 import Data.Models.StockHolder;
 import Data.Models.StockItem;
 import Services.Interfaces.IStockItemService;
+import Services.Transformers.ITransformer;
 import java.util.List;
 
 /**
@@ -18,7 +21,17 @@ import java.util.List;
  */
 public class StockItemService implements IStockItemService
 {
-
+    private final IQueryBuilder _queryBuilder;
+    private final ITransformer _transformer;
+    private final DatabaseContext _dbContext;
+    
+    public StockItemService(IQueryBuilder queryBuilder, ITransformer transformer, DatabaseContext dbContext)
+    {
+        _queryBuilder = queryBuilder;
+        _transformer = transformer;
+        _dbContext = dbContext;
+    }
+    
     @Override
     public StockItem GetStockItemForStockHolder(StockHolder stockHolder, int productId)
     {

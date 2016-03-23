@@ -66,5 +66,15 @@ public class Container
     {
         return new ProductService(GetQueryBuilder(), GetProductTransformer(), GetDatabaseContext());
     }
+    
+    public StockHolderService GetStockHolderService()
+    {
+        return new StockHolderService(GetQueryBuilder(), GetStockHolderTransformer(), GetDatabaseContext());
+    }
+    
+    public StockItemService GetStockItemService()
+    {
+        return new StockItemService(GetQueryBuilder(), GetStockItemTransformer(), GetDatabaseContext());
+    }
     //End Service section
 }
