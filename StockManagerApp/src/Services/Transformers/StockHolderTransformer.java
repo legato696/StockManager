@@ -28,7 +28,7 @@ public class StockHolderTransformer implements ITransformer
     @Override
     public List<AbsModel> TransformAll(ResultSet result)
     {
-         List<AbsModel> stockHolderList = new ArrayList<>();
+        List<AbsModel> stockHolderList = new ArrayList<>();
         
         try
         {

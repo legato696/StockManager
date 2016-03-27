@@ -3,13 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/StockManager/StockManager/StockManagerApp/src/Services/StockHolderService.java</file>
-            <file>file:/C:/StockManager/StockManager/StockManagerApp/src/Services/Transformers/ITransformer.java</file>
+            <file>file:/C:/StockManager/StockManager/StockManagerApp/src/Services/Transformers/StockHolderTransformer.java</file>
+            <file>file:/C:/StockManager/StockManager/StockManagerApp/src/Services/Transformers/StockItemTransformer.java</file>
+            <file>file:/C:/StockManager/StockManager/StockManagerApp/src/Services/Transformers/UserTransformer.java</file>
             <file>file:/C:/StockManager/StockManager/StockManagerApp/src/Infrastructure/Bootstrapper/Container.java</file>
-            <file>file:/C:/StockManager/StockManager/StockManagerApp/src/Services/StockItemService.java</file>
             <file>file:/C:/StockManager/StockManager/StockManagerApp/src/Data/Models/StockItem.java</file>
+            <file>file:/C:/StockManager/StockManager/StockManagerApp/src/Services/Transformers/ProductTransformer.java</file>
+            <file>file:/C:/StockManager/StockManager/StockManagerApp/src/Data/Models/User.java</file>
             <file>file:/C:/StockManager/StockManager/StockManagerApp/src/Services/UserService.java</file>
-            <file>file:/C:/StockManager/StockManager/StockManagerApp/src/Services/ProductService.java</file>
         </group>
     </open-files>
 </project-private>
