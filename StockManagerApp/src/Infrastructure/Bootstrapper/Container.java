@@ -71,7 +71,7 @@ public class Container
     
     public ITransformer GetStockItemTransformer()
     {
-        return new StockItemTransformer();
+        return new StockItemTransformer(new Container());
     }
     
     public ITransformer GetUserTransformer()
@@ -98,7 +98,7 @@ public class Container
     
     public UserService GetUserService()
     {
-        return new UserService(GetQueryBuilder(), GetStockItemDatabaseContext());
+        return new UserService(GetQueryBuilder(), GetUserDatabaseContext());
     }
     //End Service section
 }

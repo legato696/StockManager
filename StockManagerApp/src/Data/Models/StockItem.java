@@ -18,4 +18,5 @@ public class StockItem extends AbsModel
     public int StockItemId;
     public Product Product;
     public StockHolder StockHolder;
+    public int Quantity;
 }

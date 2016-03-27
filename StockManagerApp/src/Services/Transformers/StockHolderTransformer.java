@@ -6,8 +6,10 @@
 package Services.Transformers;
 
 import Data.Models.Abstract.AbsModel;
+import Data.Models.Product;
 import Data.Models.StockHolder;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,16 +28,24 @@ public class StockHolderTransformer implements ITransformer
     @Override
     public List<AbsModel> TransformAll(ResultSet result)
     {
+         List<AbsModel> stockHolderList = new ArrayList<>();
+        
         try
         {
             while(result.next())
             {
+                StockHolder newStockHolder = new StockHolder();
+                newStockHolder.StockHolderId = result.getInt(1);
+                newStockHolder.Name = result.getString(2);
+                
+                stockHolderList.add(newStockHolder);
             }
         }
         catch(Exception e)
         {
-            
+            System.err.println("Exception: " + e.getMessage());
         }
-        return null;    
+        
+        return stockHolderList;     
     }
 }
