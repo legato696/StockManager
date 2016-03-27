@@ -76,7 +76,7 @@ public class Container
     
     public ITransformer GetUserTransformer()
     {
-        return new UserTransformer();
+        return new UserTransformer(new Container());
     }
     //End Transformer section
     
