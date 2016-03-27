@@ -14,7 +14,7 @@ import Data.Models.Enums.StockHolderType;
  */
 public class StockHolder extends AbsModel
 {
-    public static final String TABLE_NAME = "StockHolder";
+    public static final String TABLE_NAME = "dbo.StockHolders";
     
     public int StockHolderId;
     public String Name;

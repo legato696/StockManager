@@ -7,6 +7,7 @@ package Services;
 
 import Data.DatabaseContext.DatabaseContext;
 import Data.Helpers.IQueryBuilder;
+import Data.Models.Abstract.AbsModel;
 import Data.Models.Product;
 import Data.Models.Requests.StockItemUpdateRequest;
 import Data.Models.StockHolder;
@@ -22,38 +23,59 @@ import java.util.List;
 public class StockItemService implements IStockItemService
 {
     private final IQueryBuilder _queryBuilder;
-    private final ITransformer _transformer;
     private final DatabaseContext _dbContext;
     
-    public StockItemService(IQueryBuilder queryBuilder, ITransformer transformer, DatabaseContext dbContext)
+    public StockItemService(IQueryBuilder queryBuilder, DatabaseContext dbContext)
     {
         _queryBuilder = queryBuilder;
-        _transformer = transformer;
         _dbContext = dbContext;
     }
     
     @Override
     public StockItem GetStockItemForStockHolder(StockHolder stockHolder, int productId)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        _queryBuilder.Select("*");
+        _queryBuilder.SetTable(StockItem.TABLE_NAME);
+        _queryBuilder.Where("StockHolderId = " + stockHolder.StockHolderId + " AND ProductId = " + productId);
+        List<AbsModel> result = _dbContext.ExecuteSelectQuery(_queryBuilder.GetQuery());
+        return (StockItem)result.get(0);
     }
 
     @Override
     public void UpdateStockItem(StockItemUpdateRequest stockUpdateRequest)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        _queryBuilder.Update("Quantity", Integer.toString(stockUpdateRequest.NewQuantity));
+        _queryBuilder.SetTable(StockItem.TABLE_NAME);
+        _queryBuilder.Where("StockItemId = " + stockUpdateRequest.StockItemId);
+        _dbContext.ExecuteUpdateQuery(_queryBuilder.GetQuery());
     }
 
     @Override
     public void CreateStockItemForStockHolder(StockHolder stockHolder, Product product)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        _queryBuilder.Insert("StockItemId, StockHolderId, ProductId, Quantity", 
+                (GetLastStockItemID() + 1) + ", " + stockHolder.StockHolderId + ", " + product.ProductId + ", " + 0 );
+        _queryBuilder.SetTable(StockItem.TABLE_NAME);
+        _dbContext.ExecuteInsertQuery(_queryBuilder.GetQuery());
     }
 
     @Override
     public List<StockItem> GetAllStockItemsForStockHolder(StockHolder stockHolder)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        _queryBuilder.Select("*");
+        _queryBuilder.SetTable(StockItem.TABLE_NAME);
+        _queryBuilder.Where("StockHolderId = " + stockHolder.StockHolderId);
+        List<AbsModel> result = _dbContext.ExecuteSelectQuery(_queryBuilder.GetQuery());
+        return (List<StockItem>)(List<?>) result;
+    }
+    
+    private int GetLastStockItemID()
+    {
+        _queryBuilder.Select("*");
+        _queryBuilder.SetTable(StockItem.TABLE_NAME);
+        List<AbsModel> result = _dbContext.ExecuteSelectQuery(_queryBuilder.GetQuery());
+        StockItem lastItem = (StockItem)result.get(result.size() - 1);
+        return lastItem.StockItemId;
     }
     
 }

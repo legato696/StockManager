@@ -19,4 +19,5 @@ public interface IQueryBuilder
     void Join(String tableName, String on, String abreviation);
     void Insert(String columnsAffected, String insertData);
     void Update(String columnUpdate,String updateData);
+    void Delete();
 }

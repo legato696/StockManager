@@ -14,6 +14,7 @@ import Data.Models.Enums.UserAccessLevel;
  */
 public class User extends AbsModel
 {
+    public final static String TABLE_NAME = "dbo.Users";
     public int UserId;
     public String Username;
     public String Password;

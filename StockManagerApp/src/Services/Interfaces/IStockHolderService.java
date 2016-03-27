@@ -6,6 +6,7 @@
 package Services.Interfaces;
 
 import Data.Models.StockHolder;
+import java.util.List;
 
 /**
  *
@@ -43,4 +44,11 @@ public interface IStockHolderService
      * @param stockHolderId
      */
     public void DeleteStockHolderById(int stockHolderId);
+
+    /**
+     * Returns all stockHolders in the DB
+     * 
+     * @return List<StockHolder> 
+     */
+    public List<StockHolder> GetAllStockHolders();
 }

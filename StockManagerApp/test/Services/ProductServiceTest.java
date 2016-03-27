@@ -6,11 +6,8 @@
 package Services;
 
 import Data.Models.Product;
+import Infrastructure.Bootstrapper.Container;
 import java.util.List;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -20,31 +17,13 @@ import static org.junit.Assert.*;
  */
 public class ProductServiceTest
 {
+    Container _container;
     
     public ProductServiceTest()
     {
+        _container = new Container();
     }
     
-    @BeforeClass
-    public static void setUpClass()
-    {
-    }
-    
-    @AfterClass
-    public static void tearDownClass()
-    {
-    }
-    
-    @Before
-    public void setUp()
-    {
-    }
-    
-    @After
-    public void tearDown()
-    {
-    }
-
     /**
      * Test of GetProductById method, of class ProductService.
      */
@@ -52,19 +31,11 @@ public class ProductServiceTest
     public void testGetProductById()
     {
         System.out.println("GetProductById");
-        
-        // Arrange
-        int productId = 0;
-        ProductService instance = null;
-        Product expResult = null;
-        
-        //Act
+        int productId = 1;
+        ProductService instance = _container.GetProductService();
         Product result = instance.GetProductById(productId);
         
-        //Assert
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(productId, result.ProductId);
     }
 
     /**
@@ -74,13 +45,10 @@ public class ProductServiceTest
     public void testGetProductByName()
     {
         System.out.println("GetProductByName");
-        String productName = "";
-        ProductService instance = null;
-        Product expResult = null;
+        String productName = "iPod";
+        ProductService instance = _container.GetProductService();
         Product result = instance.GetProductByName(productName);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(1, result.ProductId);
     }
 
     /**
@@ -90,11 +58,11 @@ public class ProductServiceTest
     public void testCreateProduct()
     {
         System.out.println("CreateProduct");
-        Product product = null;
-        ProductService instance = null;
+        Product product = new Product();
+        product.ProductName = "'TestProduct'";
+        ProductService instance = _container.GetProductService();
         instance.CreateProduct(product);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -104,11 +72,9 @@ public class ProductServiceTest
     public void testDeleteProduct()
     {
         System.out.println("DeleteProduct");
-        int productId = 0;
-        ProductService instance = null;
+        int productId = 9;
+        ProductService instance =  _container.GetProductService();
         instance.DeleteProduct(productId);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -118,12 +84,9 @@ public class ProductServiceTest
     public void testGetAllProducts()
     {
         System.out.println("GetAllProducts");
-        ProductService instance = null;
-        List<Product> expResult = null;
+        ProductService instance =  _container.GetProductService();
         List<Product> result = instance.GetAllProducts();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertTrue(result.size() > 0);
     }
     
 }

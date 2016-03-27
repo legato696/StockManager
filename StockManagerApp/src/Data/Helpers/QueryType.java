@@ -13,5 +13,6 @@ public enum QueryType
 {
     Select,
     Insert,
-    Update
+    Update,
+    Delete
 }

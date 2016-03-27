@@ -7,6 +7,7 @@ package Services.Transformers;
 
 import Data.Models.Abstract.AbsModel;
 import java.sql.ResultSet;
+import java.util.List;
 
 /**
  *
@@ -15,4 +16,5 @@ import java.sql.ResultSet;
 public interface ITransformer
 {
     public AbsModel Transofrm(ResultSet result);
+    public List<AbsModel> TransformAll(ResultSet result);
 }

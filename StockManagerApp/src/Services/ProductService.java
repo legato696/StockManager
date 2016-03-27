@@ -7,10 +7,9 @@ package Services;
 
 import Data.DatabaseContext.DatabaseContext;
 import Data.Helpers.IQueryBuilder;
+import Data.Models.Abstract.AbsModel;
 import Data.Models.Product;
 import Services.Interfaces.IProductService;
-import Services.Transformers.ITransformer;
-import java.sql.ResultSet;
 import java.util.List;
 
 /**
@@ -21,19 +20,17 @@ public class ProductService implements IProductService
 {
     private final IQueryBuilder _queryBuilder;
     private final DatabaseContext _dbContext;
-    private final ITransformer _transformer;
-    
-    public ProductService(IQueryBuilder queryBuilder, ITransformer transformer,DatabaseContext dbContext)
+
+    public ProductService(IQueryBuilder queryBuilder, DatabaseContext dbContext)
     {
         _queryBuilder = queryBuilder;
-        _transformer = transformer;
         _dbContext = dbContext;
     }
     
     @Override
     public Product GetProductById(int productId)
     {
-        ResultSet result;
+        List<AbsModel> result;
 
         _queryBuilder.Select("*");
         _queryBuilder.SetTable(Product.TABLE_NAME);
@@ -41,41 +38,58 @@ public class ProductService implements IProductService
         
         result = _dbContext.ExecuteSelectQuery(_queryBuilder.GetQuery());
         
-        return (Product)_transformer.Transofrm(result);
+        return (Product)result.get(0);
     }
 
     @Override
     public Product GetProductByName(String productName)
     {
-        ResultSet result;
+        List<AbsModel> result;
         
         _queryBuilder.Select("*");
         _queryBuilder.SetTable(Product.TABLE_NAME);
-        _queryBuilder.Where("Name = " + productName);
+        _queryBuilder.Where("ProductName = '" + productName +"'");
         
         result = _dbContext.ExecuteSelectQuery(_queryBuilder.GetQuery());
         
-        return (Product)_transformer.Transofrm(result);
+        return (Product)result.get(0);
     }
 
     @Override
     public void CreateProduct(Product product)
     {
-        String columnsAffected = "Name";
-        String insertData = product.ProductName;
+        List<Product> currentProducts = GetAllProducts();
+        Product lastProduct = currentProducts.get(currentProducts.size()-1);
+        System.out.println("Last id: " + lastProduct.ProductId);
+        String columnsAffected = "ProductId, ProductName";
+        String insertData = (lastProduct.ProductId + 1) + ", " +product.ProductName;
+        
         _queryBuilder.Insert(columnsAffected, insertData);
+        _queryBuilder.SetTable(Product.TABLE_NAME);
+        
         _dbContext.ExecuteInsertQuery(_queryBuilder.GetQuery());
     }
 
     @Override
     public void DeleteProduct(int productId)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        _queryBuilder.Delete();
+        _queryBuilder.SetTable(Product.TABLE_NAME);
+        _queryBuilder.Where("ProductId = " + productId);
+        
+        _dbContext.ExecuteDeleteQuery(_queryBuilder.GetQuery());
     }
 
     @Override
     public List<Product> GetAllProducts()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<AbsModel> result;
+        
+        _queryBuilder.Select("*");
+        _queryBuilder.SetTable(Product.TABLE_NAME);
+        
+        result = _dbContext.ExecuteSelectQuery(_queryBuilder.GetQuery());
+        
+        return (List<Product>)(List<?>)result;
     }
 }

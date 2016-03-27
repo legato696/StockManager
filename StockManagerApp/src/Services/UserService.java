@@ -5,9 +5,13 @@
  */
 package Services;
 
-import Data.Models.Requests.UserUpdateRequest;
+import Data.DatabaseContext.DatabaseContext;
+import Data.Helpers.IQueryBuilder;
+import Data.Helpers.QueryBuilder;
+import Data.Models.Abstract.AbsModel;
 import Data.Models.User;
 import Services.Interfaces.IUserService;
+import java.util.List;
 
 /**
  *
@@ -15,23 +19,46 @@ import Services.Interfaces.IUserService;
  */
 public class UserService implements IUserService
 {
+    private final IQueryBuilder _queryBuilder;
+    private final DatabaseContext _dbContext;
+    
+    public UserService(IQueryBuilder queryBuilder, DatabaseContext dbContext)
+    {
+        _queryBuilder = queryBuilder;
+        _dbContext = dbContext;
+    }
 
     @Override
     public User GetUserByUsername(String username)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        _queryBuilder.Select("*");
+        _queryBuilder.SetTable(User.TABLE_NAME);
+        _queryBuilder.Where("Username = " + username);
+        List<AbsModel> users = _dbContext.ExecuteSelectQuery(_queryBuilder.GetQuery());
+
+        if(!users.isEmpty())
+        {
+            return (User)users.get(0);
+        }
+        
+        return null;
     }
 
     @Override
     public void InsertUser(User user)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void UpdateUser(UserUpdateRequest request)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        _queryBuilder.Insert("UserId, Username, Password, StockHolderId, AccessLevel", 
+                (GetLastUserId() + 1) + ", " + user.Username + ", " + user.Password + ", " + user.StockHolder.StockHolderId + ", " + user.AccessLevel);
+        _queryBuilder.SetTable(User.TABLE_NAME);
+        _dbContext.ExecuteInsertQuery(_queryBuilder.GetQuery());
     }
     
+    private int GetLastUserId()
+    {
+        _queryBuilder.Select("*");
+        _queryBuilder.SetTable(User.TABLE_NAME);
+        List<AbsModel> result = _dbContext.ExecuteSelectQuery(_queryBuilder.GetQuery());
+        User lastUser = (User)result.get(result.size()-1);
+        return lastUser.UserId;
+    }
 }

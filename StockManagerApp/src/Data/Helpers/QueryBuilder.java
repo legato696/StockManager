@@ -28,7 +28,9 @@ public class QueryBuilder implements IQueryBuilder
     public String GetQuery()
     {
         BuildQuery();
-        return Query;
+        String returnedQuery = Query;
+        ResetOldQuery();
+        return returnedQuery;
     }
 
     private void BuildQuery()
@@ -45,6 +47,9 @@ public class QueryBuilder implements IQueryBuilder
                     break;
                 case Update:
                     BuildUpdateQuery();
+                    break;
+                case Delete:
+                    BuildDeleteQuery();
                     break;
             }
         }
@@ -112,6 +117,11 @@ public class QueryBuilder implements IQueryBuilder
         }
     }
 
+    public void Delete()
+    {
+        queryType = QueryType.Delete;
+    }
+    
     private void BuildSelectQuery()
     {
         Query = "SELECT " + Selection +
@@ -140,6 +150,16 @@ public class QueryBuilder implements IQueryBuilder
         {
             Query = Query + " SET " + Data + " WHERE " + WhereCriteria;
         }
+    }
+
+    private void BuildDeleteQuery()
+    {
+        Query = "DELETE FROM " + TableName +" WHERE " + WhereCriteria;
+    }
+
+    private void ResetOldQuery()
+    {
+        Query = null;
     }
     
 }

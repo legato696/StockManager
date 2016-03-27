@@ -5,7 +5,6 @@
  */
 package Services.Interfaces;
 
-import Data.Models.Requests.UserUpdateRequest;
 import Data.Models.User;
 
 /**
@@ -32,11 +31,4 @@ public interface IUserService
      * @param user
      */
     public void InsertUser(User user);
-    
-    /**
-     * Updates the user with userId from the UserUpdateRequest
-     * 
-     * @param request
-     */
-    public void UpdateUser(UserUpdateRequest request);
 }

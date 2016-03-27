@@ -7,10 +7,10 @@ package Services;
 
 import Data.DatabaseContext.DatabaseContext;
 import Data.Helpers.IQueryBuilder;
+import Data.Models.Abstract.AbsModel;
 import Data.Models.StockHolder;
 import Services.Interfaces.IStockHolderService;
-import Services.Transformers.ITransformer;
-import java.sql.ResultSet;
+import java.util.List;
 
 /**
  *
@@ -20,42 +20,37 @@ public class StockHolderService implements IStockHolderService
 {
     private final IQueryBuilder _queryBuilder;
     private final DatabaseContext _dbContext;
-    private final ITransformer _transformer;
-    
-    
-    public StockHolderService(IQueryBuilder queryBuilder, ITransformer transformer, DatabaseContext dbContext)
+      
+    public StockHolderService(IQueryBuilder queryBuilder, DatabaseContext dbContext)
     {
         _queryBuilder = queryBuilder;
-        _transformer = transformer;
         _dbContext = dbContext;
     }
     
     @Override
     public StockHolder GetStockHolderById(int stockHolderId)
     {
-        ResultSet result;
+        List<AbsModel> result;
         
         _queryBuilder.Select("*");
         _queryBuilder.SetTable(StockHolder.TABLE_NAME);
         _queryBuilder.Where("StockHolderId = " + stockHolderId);
         
         result = _dbContext.ExecuteSelectQuery(_queryBuilder.GetQuery());
-    
-        return (StockHolder)_transformer.Transofrm(result);
+        return (StockHolder)result.get(0);
     }
 
     @Override
     public StockHolder GetStockHolderByName(String stockHolderName)
     {
-        ResultSet result;
+        List<AbsModel> result;
         
         _queryBuilder.Select("*");
         _queryBuilder.SetTable(StockHolder.TABLE_NAME);
         _queryBuilder.Where("Name = " + stockHolderName);
         
         result = _dbContext.ExecuteSelectQuery(_queryBuilder.GetQuery());
-    
-        return (StockHolder)_transformer.Transofrm(result);
+        return (StockHolder)result.get(0);
     }
 
     @Override
@@ -69,7 +64,19 @@ public class StockHolderService implements IStockHolderService
     @Override
     public void DeleteStockHolderById(int stockHolderId)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        _queryBuilder.Delete();
+        _queryBuilder.SetTable(StockHolder.TABLE_NAME);
+        _queryBuilder.Where("StockHolderId = " + stockHolderId);
+        _dbContext.ExecuteDeleteQuery(_queryBuilder.GetQuery());
     }
-    
+
+    @Override
+    public List<StockHolder> GetAllStockHolders()
+    {
+        _queryBuilder.Select("*");
+        _queryBuilder.SetTable(StockHolder.TABLE_NAME);
+        List<AbsModel> result = _dbContext.ExecuteSelectQuery(_queryBuilder.GetQuery());
+        
+        return (List<StockHolder>)(List<?>)result;
+    }
 }

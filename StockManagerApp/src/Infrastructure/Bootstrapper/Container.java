@@ -19,16 +19,35 @@ public class Container
     //ConnectionStrings Resolver section
     public ConnectionStrings GetConnectionStrings()
     {
-        return new ConnectionStrings();
+        String string = "jdbc:sqlserver://dbstockcontrol.database.windows.net:1433;database=DBStockManager;user=dbstockcontoller@dbstockcontrol;password=!DBAdmin;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+        ConnectionStrings stringsObject = new ConnectionStrings(); 
+        stringsObject.connection = string;
+        return stringsObject;
     }
     //End ConnectionStrings Resolver section
     
     //DatabaseContext Section
-    public DatabaseContext GetDatabaseContext()
+    public DatabaseContext GetProductDatabaseContext()
     {
-        return new DatabaseContext(GetConnectionStrings());
+        return new DatabaseContext(GetConnectionStrings(), GetProductTransformer());
     }
     
+    public DatabaseContext GetStockItemDatabaseContext()
+    {
+        return new DatabaseContext(GetConnectionStrings(), GetStockItemTransformer());
+    }    
+    
+    public DatabaseContext GetStockHolderDatabaseContext()
+    {
+        return new DatabaseContext(GetConnectionStrings(), GetStockHolderTransformer());
+    }    
+    
+    public DatabaseContext GetUserDatabaseContext()
+    {
+        return new DatabaseContext(GetConnectionStrings(), GetUserTransformer());
+    }
+    
+        
     //End DatabaseContext section
     
     //QueryBuilder Section
@@ -64,17 +83,22 @@ public class Container
     //Service Section
     public ProductService GetProductService()
     {
-        return new ProductService(GetQueryBuilder(), GetProductTransformer(), GetDatabaseContext());
+        return new ProductService(GetQueryBuilder(), GetProductDatabaseContext());
     }
     
     public StockHolderService GetStockHolderService()
     {
-        return new StockHolderService(GetQueryBuilder(), GetStockHolderTransformer(), GetDatabaseContext());
+        return new StockHolderService(GetQueryBuilder(), GetStockHolderDatabaseContext());
     }
     
     public StockItemService GetStockItemService()
     {
-        return new StockItemService(GetQueryBuilder(), GetStockItemTransformer(), GetDatabaseContext());
+        return new StockItemService(GetQueryBuilder(), GetStockItemDatabaseContext());
+    }
+    
+    public UserService GetUserService()
+    {
+        return new UserService(GetQueryBuilder(), GetStockItemDatabaseContext());
     }
     //End Service section
 }

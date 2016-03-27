@@ -13,7 +13,7 @@ import Data.Models.Abstract.AbsModel;
  */
 public class StockItem extends AbsModel
 {
-    public static final String TABLE_NAME = "Stocks";
+    public static final String TABLE_NAME = "dbo.Stocks";
     
     public int StockItemId;
     public Product Product;
